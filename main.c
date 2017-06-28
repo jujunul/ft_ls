@@ -6,7 +6,7 @@
 /*   By: juthierr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/28 14:29:57 by juthierr          #+#    #+#             */
-/*   Updated: 2017/06/28 15:14:54 by juthierr         ###   ########.fr       */
+/*   Updated: 2017/06/28 15:57:56 by juthierr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,27 @@
 
 int main(int ac, char **av)
 {
-	t_env *options;
-
-	if (ac ==  1 || av[1] == NULL)
+	t_env *option;
+	//init option
+	//
+	if (ac >= 2)
 	{
-		ft_ls(av , 0);
-		printf("ls no option juste ls")
-	}
-	if (av[1][0] != '-')
-	{
-		if (ft_ls(av, 1) == 0)
+		if (av[1][0] != '-')
 		{
-			ft_print_erno();
-			printf("pas d'argument, wrong path\n")
-			return (0);
+			if (ft_ls(ac, av, 1, option) == 0)
+			{
+				ft_print_erno();
+				printf("pas d'argument, wrong path\n")
+					return (0);
+			}
+			printf("pas d'argument/ path direct\n");
 		}
-		printf("pas d'argument/ path direct\n");
+		if (av[1][0] == '-')
+		{
+			ft_ls(ac, av, 0, option);
+			printf("ls avec option");
+		}
 	}
-	if (ac == 2 && )
-
-
+	else
+		printf("ls no option, current path");
 }
