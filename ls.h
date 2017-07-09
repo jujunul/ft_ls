@@ -6,7 +6,7 @@
 /*   By: juthierr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 15:48:14 by juthierr          #+#    #+#             */
-/*   Updated: 2017/06/28 15:15:10 by juthierr         ###   ########.fr       */
+/*   Updated: 2017/07/09 01:25:14 by juthierr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 typedef struct	s_env
 {
 	int recur;
-	int hiden;
+	int hidden;
 
-}				t_env
+}				t_env;
 
 #endif

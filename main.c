@@ -6,7 +6,7 @@
 /*   By: juthierr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/28 14:29:57 by juthierr          #+#    #+#             */
-/*   Updated: 2017/06/28 15:57:56 by juthierr         ###   ########.fr       */
+/*   Updated: 2017/07/09 01:24:50 by juthierr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,5 @@ int main(int ac, char **av)
 	}
 	else
 		printf("ls no option, current path");
+	return (0);
 }
