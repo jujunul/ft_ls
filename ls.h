@@ -17,13 +17,30 @@
 # include <dirent.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/stat.h>
 # include "libft.h"
+
+typedef struct  s_mem
+{
+  struct dirent *dp;
+  struct s_mem  *content;
+  struct s_mem  *prev;
+  struct s_mem  *next;
+  char          *patt;
+  struct stat   info;
+}               t_mem;
 
 typedef struct	s_env
 {
-	int recur;
-	int hidden;
-
-}				t_env;
+  struct s_mem *first;
+  struct s_mem *mem;
+  char          **path;
+  DIR 					*dir;
+  char          option[6];
+  char				pwd[64];
+  size_t				pwdlen;
+  char				grp[64];
+  size_t				grplen;
+}								t_env;
 
 #endif

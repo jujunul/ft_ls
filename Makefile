@@ -2,15 +2,15 @@ NAME = ls
 
 INC = -I./libft/
 
-SRC = 	ft_ls.c
+SRC = 	recur.c
 
 OBJ = $(SRC:.c=.o)
 
 LIBFT = libft/libft.a
 
-CFLAGS = -Wall -Wextra -Werror $(INC)
+CFLAGS = $(INC)
 
-all: $(NAME) 
+all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
 		gcc $(CFLAGS) $(LIBFT) -o $(NAME) $(OBJ)
