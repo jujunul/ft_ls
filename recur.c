@@ -49,15 +49,38 @@ void 	ft_init_mem(t_mem *mem)
 	mem->type = NULL;
 }
 
+void ft_path(t_mem *mem, t_env *env)
+{
+
+	if(mem->dp->d_type != S_ISDIR)/*option -R*/
+	{
+
+	}
+}
+
+void 	ft_init_path(int ac, char **av, t_env *env, t_mem *mem)
+{
+		int i;
+
+		i = 1
+		t_env->path = (char**)malloc(sizeof(char*) * ac);
+		while (i < ac)
+		{
+			//ft_parsing_arg(av[i]);
+			t_env->path[i - 1] = ft_strdup(av[i])
+		}
+}
+
 void  ft_read_file(t_mem *mem, t_env *env)
 {
 	t_mem		*tmp;
 
 	tmp = mem;
-	mem->dir = opendir(mem->path);
+	ft_path(mem, env);
+	env->dir = opendir(mem->path);
 	while ((mem->dp = readdir(mem->dir)) != NULL)
 	{
-		ft_mem(mem, );
+		ft_mem();
 		mem = mem->next;
 	}
 	while(tmp->next != NULL) /* option -R*/
@@ -73,8 +96,11 @@ void  ft_read_file(t_mem *mem, t_env *env)
 int		main(int ac, char **av)
 {
 	t_mem					*mem;
+	t_env					*env;
 
+	env = (t_env*)malloc(sizeof(t_mem));
 	mem = (t_mem*)malloc(sizeof(t_mem));
+	ft_init_path(ac, av, env, mem);
 	if (ac == 1)
 	{
 		ft_init_mem(mem);
