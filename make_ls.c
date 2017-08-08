@@ -35,6 +35,10 @@ void		ft_mem(t_mem *lst, struct dirent *dp)
 	}
 }
 
+void		ft_affichage(lst)
+{
+
+}
 void		make_ls(char *path)
 {
 	t_mem			*lst;
@@ -50,7 +54,10 @@ void		make_ls(char *path)
 	while ((dp = readdir(dir)) != NULL)
 	{
 		ft_mem(lst, dp);
-		if (dp->d_name[0] != '.')
+		//MEM ET TRIE + RECUR AVEC LE DIR JUSTE AU DESSUS
+		//FAIRE LES FONCTION AFFICHAGES APRES CA(AUTRE FONCTION) 
+
+		if (lst->namae[0] != '.')
 		{
 			ft_putstr(ft_strcat(dp->d_name, "\t"));
 		}
