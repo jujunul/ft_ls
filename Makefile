@@ -2,7 +2,9 @@ NAME = ls
 
 INC = -I./libft/
 
-SRC = 	recur.c
+SRC = 	argument.c\
+		main.c\
+		make_ls.c\
 
 OBJ = $(SRC:.c=.o)
 

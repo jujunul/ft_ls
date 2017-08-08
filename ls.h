@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/stat.h>
-//# include "libft.h"
+# include "libft.h"
 typedef int bool;
 # define false 0
 # define true 1
@@ -32,27 +32,39 @@ enum
   t
 };
 
+
 typedef struct  s_mem
 {
-  struct dirent *dp;
-  struct s_mem  *content;
-  struct s_mem  *prev;
+  char          *name;
   struct s_mem  *next;
-  char          *patt;
-  struct stat   info;
+  struct s_mem  *prev;
+  struct s_mem  *dir;
 }               t_mem;
 
 typedef struct	s_env
 {
+  bool          option[5];
   struct s_mem *first;
   struct s_mem *mem;
   char          **path;
   DIR 					*dir;
-  bool          option[5];
   char				pwd[64];
   size_t				pwdlen;
   char				grp[64];
   size_t				grplen;
 }								t_env;
+
+/*
+parsing argument
+*/
+int       ft_parsing(int ac, char **av, t_env *env);
+int       ft_run_option(int i, char *av, bool *option);
+int       ft_filloption(char avc, bool *option);
+void      ft_init_arg(bool *option);
+
+/*
+make_ls
+*/
+void    make_ls(char *path);
 
 #endif

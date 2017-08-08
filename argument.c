@@ -6,81 +6,71 @@
 /*   By: juthierr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/07 17:33:54 by juthierr          #+#    #+#             */
-/*   Updated: 2017/08/07 17:33:56 by juthierr         ###   ########.fr       */
+/*   Updated: 2017/08/08 18:35:54 by juthierr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-void ft_init_arg(bool   *option)
+void		ft_init_arg(bool *option)
 {
-  option[R] = false;
-  option[a] = false;
-  option[l] = false;
-  option[r] = false;
-  option[t] = false;
+	option[R] = false;
+	option[a] = false;
+	option[l] = false;
+	option[r] = false;
+	option[t] = false;
 }
 
-int    ft_filloption(char *avc, t_env *env)
+int			ft_filloption(char avc, bool *option)
 {
-  int i;
-  i = 1
-  while (avc[i])
-  {
-    if (avc[i] == 'R')
-      env->option[R] = true;
-    else if (avc[i] == 'a')
-      env->option[a] = true;
-    else if (avc[i] == 'l')
-      env->option[l] = true;
-    else if (avc[i] == 'r')
-      env->option[r] = true;
-    else if (avc[i] == 't')
-      env->option[t] = true;
-    else
-    {
-      ft_puterror("option non gerer");
-      exit;
-    }
-  }
-}
-int    ft_run_option(int i, char **av,  t_env*env)
-{
-  int j;
-
-  j = 0;
-  while (av[i][j])
-  {
-    if (av[i][j] == '-')
-    {
-      if(!(ft_filloption(av[i], env)))
-      //ft_print error option;
-        return (0);
-    }
-  }
-
-}
-int     ft_parsing(int ac, char **av, t_env *env)
-{
-  int i;
-
-  i = 1;
-  ft_init_arg(env->option);
-  while (i <= ac)
-  {
-    ft_run_option(i, av, env);
-    i++;
-  }
-  return (1)
+	if (avc == 'R')
+		option[R] = true;
+	else if (avc == 'a')
+		option[a] = true;
+	else if (avc == 'l')
+		option[l] = true;
+	else if (avc == 'r')
+		option[r] = true;
+	else if (avc == 't')
+		option[t] = true;
+	else
+	{
+		ft_putstr_fd("ft_ls: illegal option -- ", 2);
+		ft_putchar_fd(avc, 2);
+		ft_putstr_fd("\n", 2);
+		ft_putendl_fd("usage : ft_ls [-Raltr] [file ...]", 2);
+		return (-1);
+	}
+	return (1);
 }
 
-int     main(int ac, char **av)
+int			ft_run_option(int i, char *av, bool *option)
 {
+	int j;
 
-  t_env   *env;
+	j = 1;
+	if (av[0] != '-')
+		return (0);
+	while (av[j])
+	{
+		if ((ft_filloption(av[j], option) < 0))
+			return (-1);
+		j++;
+	}
+	return (1);
+}
 
-  env = (t_env *)malloc(sizeof(t_env));
-  ft_parsing(ac, av, env);
-  printf("%d\n", env->option[R]);
-  return (0);
+int			ft_parsing(int ac, char **av, t_env *env)
+{
+	int i;
+
+	i = 1;
+	ft_init_arg(env->option);
+	while (i < ac)
+	{
+		if (ft_run_option(i, av[i], env->option) < 0)
+			return (-1);
+		i++;
+	}
+	return (1);
 }
