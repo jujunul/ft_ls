@@ -57,6 +57,9 @@ void      ft_init_arg(bool *option);
 /*
 make_ls
 */
-void    make_ls(char *path);
+void    make_ls(char *path, t_env *env);
+int     ft_lst_sort(t_mem *lst, struct dirent *dp, t_env *env);
+void    ft_mem(t_mem *lst, struct dirent *dp, t_env *env);
+void    ft_affichage(t_mem *lst);
 
 #endif
