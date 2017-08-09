@@ -37,21 +37,13 @@ typedef struct  s_mem
 {
   char          *name;
   struct s_mem  *next;
-  struct s_mem  *prev;
   struct s_mem  *dir;
 }               t_mem;
 
 typedef struct	s_env
 {
   bool          option[5];
-  struct s_mem *first;
-  struct s_mem *mem;
   char          **path;
-  DIR 					*dir;
-  char				pwd[64];
-  size_t				pwdlen;
-  char				grp[64];
-  size_t				grplen;
 }								t_env;
 
 /*

@@ -18,7 +18,10 @@ int     main(int ac, char **av)
 
 	env = (t_env *)malloc (sizeof(t_env));
 	if (ac == 1)
-  		make_ls(".");
+	{
+		ft_init_arg(env->option);
+  		make_ls(".", env);
+  	}
  	else
 	{
 		if ((ft_parsing(ac, av, env) < 0))
