@@ -12,62 +12,147 @@
 
 #include "ls.h"
 
-int		ft_lst_sort(t_mem *lst, struct dirent *dp)
+t_mem		*ft_lst_sort(t_mem *lst, struct dirent *dp)
 {
-	t_mem *tmp1;
-	t_mem *tmp2;
+	t_mem *tmp;
+	t_mem *prev;
+	t_mem *new;
 
-	tmp1 = (t_mem*)malloc(sizeof(t_mem));
-	tmp2 = (t_mem*)malloc(sizeof(t_mem));
-	tmp2->next = lst->next;
-	tmp1->name = ft_strdup(dp->d_name);
-	while (lst->next != NULL)
+	new = (t_mem*)malloc(sizeof(t_mem));
+	tmp = lst;
+	prev = NULL;
+	new->name = ft_strdup(dp->d_name);
+	while (tmp !=NULL)
 	{
-		if ((ft_strcmp(lst->name, dp->d_name)) > 0)
+		if (ft_strcmp(tmp->name, dp->d_name) > 0)
 		{
-			tmp1->next = lst;
-			tmp2->next = tmp1;
-			return (0);
+			if(prev == NULL)
+			{
+				new->next = tmp;
+				lst = new;
+				break ;
+			}
+				else
+			{
+				new->next = tmp;
+				prev->next = new;
+				break;
+			}
 		}
-		tmp2 = lst;
-		lst = lst->next;
+		if (tmp->next == NULL)
+		{
+			tmp->next = new;
+			new->next = NULL;
+		}
+		prev = tmp;
+		tmp = tmp->next;
 	}
-	if((ft_strcmp(lst->name, dp->d_name)) <= 0)
-	{
-		tmp1->next = NULL;
-		lst->next = tmp1;
-		return (0);
-	}
-	else
-	{
-		tmp2 = lst;
-		tmp1->next = tmp2;
-		lst = tmp1;
-		return (0);
-	}
+	return (lst);
 }
 
-void	ft_sort_time(t_mem *lst, struct dirent *dp, t_env *env)
+t_mem		*ft_sort_time(t_mem *lst, struct dirent *dp)
 {
-	//faire le sort pars le temps dans stat st_atime or st_ctime;
+	t_mem *tmp;
+	t_mem *prev;
+	t_mem *new;
+	struct stat buf;
+	struct stat tp;
+
+	new = (t_mem*)malloc(sizeof(t_mem));
+	tmp = lst;
+	prev = NULL;
+	lstat(dp->d_name, &tp);
+	new->name = ft_strdup(dp->d_name);
+	while (tmp != NULL)
+	{
+		lstat(tmp->name, &buf);
+		if ((buf.st_mtimespec.tv_sec - tp.st_mtimespec.tv_sec) < 0)
+		{
+			if(prev == NULL)
+			{
+				new->next = tmp;
+				lst = new;
+				break ;
+			}
+				else
+			{
+				new->next = tmp;
+				prev->next = new;
+				break;
+			}
+		}
+		if (tmp->next == NULL)
+		{
+			tmp->next = new;
+			new->next = NULL;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	return (lst);
 }
 
+t_mem		*ft_sort_time_r(t_mem *lst, struct dirent *dp)
+{
+	t_mem *tmp;
+	t_mem *prev;
+	t_mem *new;
+	struct stat buf;
+	struct stat tp;
 
-void	ft_mem(t_mem *lst, struct dirent *dp, t_env *env)
+	new = (t_mem*)malloc(sizeof(t_mem));
+	tmp = lst;
+	prev = NULL;
+	lstat(dp->d_name, &tp);
+	new->name = ft_strdup(dp->d_name);
+	while (tmp != NULL)
+	{
+		lstat(tmp->name, &buf);
+		if ((buf.st_mtimespec.tv_sec - tp.st_mtimespec.tv_sec) >= 0)
+		{
+			if(prev == NULL)
+			{
+				new->next = tmp;
+				lst = new;
+				break ;
+			}
+				else
+			{
+				new->next = tmp;
+				prev->next = new;
+				break;
+			}
+		}
+		if (tmp->next == NULL)
+		{
+			tmp->next = new;
+			new->next = NULL;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	return (lst);
+}
+
+t_mem	*ft_mem(t_mem *lst, struct dirent *dp, t_env *env)
 {
 	if (lst->name == NULL)
 	{
 		lst->name = ft_strdup(dp->d_name);
 		lst->next = NULL;
-		return ;
 	}
 	else
 	{
-		if (env->option[t] == true)
-			ft_sort_time(lst, dp)
-		ft_lst_sort(lst, dp, env);
-		return ;
+		if (env->option[t] == true && env->option[r] == false)
+			lst = ft_sort_time(lst, dp);
+		else if (env->option[t] == true && env->option[r] == true)
+			lst =ft_sort_time_r(lst, dp);
+		else if (env->option[t] == false && env->option[r] == true)
+			lst = ft_lst_sort_r(lst, dp);
+		else if (env->option[t] == false && env->option[r] == false)
+			lst = ft_lst_sort(lst, dp);
 	}
+	return (lst);
 }
 
 void	ft_affichage(t_mem *lst)
@@ -86,24 +171,23 @@ void	make_ls(char *path, t_env *env)
 	struct dirent	*dp;
 	DIR				*dir;
 	t_mem			*first;
+	struct stat 	buf;
 
 	if (!(lst = (t_mem*)malloc(sizeof(t_mem))))
 	{
 		ft_putendl_fd("malloc error", 2);
 		exit (0);
 	}
+	lst->name = NULL;
 	lst->next = NULL;
-	lst->name = ft_strnew(1);
 	dir = opendir(path);
 	while ((dp = readdir(dir)) != NULL)
 	{
-		ft_mem(lst, dp, env);
-		if (env->option[R] == true && dp->d_type == S_ISDIR)
+		lst = ft_mem(lst, dp, env);
+		lstat(dp->d_name, &buf);
+		if (env->option[R] == true && S_ISDIR(buf.st_mode))
 			make_ls(ft_strcat_path(path, dp->d_name), env);
 	}
-	if (env->option[r] == true)
-		ft_lst_reverse(lst, dp);
 	ft_affichage(lst);
-	ft_ls_recur(lst, env);
 	closedir(dir);
 }

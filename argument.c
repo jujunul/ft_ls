@@ -72,5 +72,5 @@ int			ft_parsing(int ac, char **av, t_env *env)
 			return (-1);
 		i++;
 	}
-	return (1);
+	return (i);
 }

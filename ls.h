@@ -16,6 +16,8 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <stdlib.h>
+# include <grp.h>
+# include <pwd.h>
 # include <unistd.h>
 # include <sys/stat.h>
 # include "libft.h"
@@ -58,8 +60,10 @@ void      ft_init_arg(bool *option);
 make_ls
 */
 void    make_ls(char *path, t_env *env);
-int     ft_lst_sort(t_mem *lst, struct dirent *dp, t_env *env);
-void    ft_mem(t_mem *lst, struct dirent *dp, t_env *env);
+t_mem     *ft_lst_sort(t_mem *lst, struct dirent *dp);
+t_mem    *ft_mem(t_mem *lst, struct dirent *dp, t_env *env);
 void    ft_affichage(t_mem *lst);
+char    *ft_strcat_path(char *s1, char *s2);
+t_mem* ft_lst_sort_r(t_mem *lst, struct dirent *dp);
 
 #endif

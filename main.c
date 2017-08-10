@@ -12,6 +12,44 @@
 
 #include "ls.h"
 
+t_mem		*ft_lst_sort_r(t_mem *lst, struct dirent *dp)
+{
+	t_mem *tmp;
+	t_mem *prev;
+	t_mem *new;
+
+	new = (t_mem*)malloc(sizeof(t_mem));
+	tmp = lst;
+	prev = NULL;
+	new->name = ft_strdup(dp->d_name);
+	while (tmp != NULL)
+	{
+		if (ft_strcmp(tmp->name, dp->d_name) <= 0)
+		{
+			if (prev == NULL)
+			{
+				new->next = tmp;
+				lst = new;
+				break ;
+			}
+			else
+			{
+				new->next = tmp;
+				prev->next = new;
+				break;
+			}
+		}
+		if (tmp->next == NULL)
+		{
+			tmp->next = new;
+			new->next = NULL;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	return (lst);
+}
+
 char *ft_strcat_path(char *s1, char *s2)
 {
 	char *buf;
@@ -22,23 +60,12 @@ char *ft_strcat_path(char *s1, char *s2)
 	return (buf);
 }
 
-void	ft_ls_onall(int ac, char **av, t_env *env)
-{
-	int i;
-
-	i = 1
-	while (av[i])
-	{
-		make_ls(av[i], env);
-		i++;
-	}
-}
-
 int     main(int ac, char **av)
 {
 	t_env *env;
+	int i;
 
-	env = (t_env *)malloc (sizeof(t_env));
+	env = (t_env *)malloc (sizeof(t_env));	
 	if (ac == 1)
 	{
 		ft_init_arg(env->option);
@@ -46,10 +73,19 @@ int     main(int ac, char **av)
   	}
  	else
 	{
-		if ((ft_parsing(ac, av, env) < 0))
+		i = ft_parsing(ac, av, env);
+		if (i < 0)
 			return (0);
-		ft_ls_onall(ac, av , env)
-		//make_lsall(ac, av, env);
+		else if (i == ac)
+			make_ls(".", env);
+		else
+		{
+			while (i < ac)
+			{
+				make_ls(ft_strcat(".", av[i]) , env);
+				i++;
+			}
+		}
 	}
 	return (0);
 }
