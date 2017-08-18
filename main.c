@@ -61,32 +61,23 @@ char *ft_strcat_path(char *s1, char *s2)
 	return (buf);
 }
 
-// int     main(int ac, char **av)
-// {
-// 	t_env *env;
-// 	int i;
+int	main(int ac , char **av)
+{
+	t_env *env;
+	int i;
+	int j;
 
-// 	env = (t_env *)malloc (sizeof(t_env));
-// 	if (ac == 1)
-// 	{
-// 		ft_init_arg(env->option);
-//   		make_ls(".", env);
-//   	}
-//  	else
-// 	{
-// 		i = ft_parsing(ac, av, env);
-// 		if (i < 0)
-// 			return (0);
-// 		else if (i == ac)
-// 			make_ls(".", env);
-// 		else
-// 		{
-// 			while (i < ac)
-// 			{
-// 				make_ls(ft_strcat_path(".", av[i]) , env);
-// 				i++;
-// 			}
-// 		}
-// 	}
-// 	return (0);
-// }
+	i = 0;
+	env = (t_env*)malloc(sizeof(t_env));
+	ft_init_arg(env->option);
+	if (ac == 1)
+	{
+		make_ls(".", env);
+		return (0);
+	}
+	else
+	{
+		ft_parsing(av, ac, env);
+		return (0);
+	}
+}

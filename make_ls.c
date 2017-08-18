@@ -155,25 +155,36 @@ t_mem	*ft_mem(t_mem *lst, struct dirent *dp, t_env *env)
 	return (lst);
 }
 
-void	ft_affichage(t_mem *lst)
+void	ft_affichage(t_mem *lst, t_env *env)
 {
 	while (lst->next != NULL)
 	{
-		printf("%s\n", lst->name);
-		lst = lst->next;
+		if (lst->name[0] == '.' && env->option[a] == false)
+			{
+				lst = lst->next;
+				continue ;
+			}
+		else
+		{
+			ft_putstr(lst->name);
+			ft_putstr("\t");
+			lst = lst->next;
+		}
 	}
 	printf("%s\n", lst->name);
 }
 
-void	ft_error_directory(DIR *dir, char *path)
+int		ft_error_directory(DIR *dir, char *path)
 {
-	if (dir == NULL)
+	struct stat buf;
+	if (-1 != lstat(path, &buf))
 	{
-		ft_putstr_fd("ft_ls : ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(" No such file or diretory\n", 2);
-		exit(0) ;
+		ft_putendl((ft_strrchr(path, 47) + 1));
+		return (0);
 	}
+	ft_putstr_fd("ft_ls : ", 2);
+	perror(path);
+	exit(EXIT_FAILURE);
 }
 
 void	make_ls(char *path, t_env *env)
@@ -192,10 +203,8 @@ void	make_ls(char *path, t_env *env)
 	lst->name = NULL;
 	lst->next = NULL;
 	if((!(dir = opendir(path))))
-	{
-		perror("ls : ");
-		exit(EXIT_FAILURE);
-	}
+		if (!(ft_error_directory(dir, path)))
+			return ;
 	while ((dp = readdir(dir)) != NULL)
 	{
 		lst = ft_mem(lst, dp, env);
@@ -210,11 +219,9 @@ void	make_ls(char *path, t_env *env)
 			continue ;
 		else if (env->option[R] == true && S_ISDIR(buf.st_mode))
 		{
-			printf("%d\n", S_ISDIR(buf.st_mode));
-			printf("%d\n", S_ISREG(buf.st_mode));
 			make_ls(ft_strcat_path(path, dp->d_name), env);
 		}
 	}
-	ft_affichage(lst);
+	ft_affichage(lst, env);
 	closedir(dir);
 }
