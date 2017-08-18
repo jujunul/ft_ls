@@ -54,38 +54,39 @@ char *ft_strcat_path(char *s1, char *s2)
 {
 	char *buf;
 
-	buf = ft_strnew((size_t)(ft_strlen(s1) + ft_strlen(s2) + 1));
-	buf = ft_strcat(s1,"/");
-	buf = ft_strcat(s1, s2);
+	buf = ft_strnew((ft_strlen(s1) + ft_strlen(s2) + 4));
+	buf = ft_strcpy(buf, s1);
+	buf = ft_strcat(buf,"/");
+	buf = ft_strcat(buf, s2);
 	return (buf);
 }
 
-int     main(int ac, char **av)
-{
-	t_env *env;
-	int i;
+// int     main(int ac, char **av)
+// {
+// 	t_env *env;
+// 	int i;
 
-	env = (t_env *)malloc (sizeof(t_env));	
-	if (ac == 1)
-	{
-		ft_init_arg(env->option);
-  		make_ls(".", env);
-  	}
- 	else
-	{
-		i = ft_parsing(ac, av, env);
-		if (i < 0)
-			return (0);
-		else if (i == ac)
-			make_ls(".", env);
-		else
-		{
-			while (i < ac)
-			{
-				make_ls(ft_strcat(".", av[i]) , env);
-				i++;
-			}
-		}
-	}
-	return (0);
-}
+// 	env = (t_env *)malloc (sizeof(t_env));
+// 	if (ac == 1)
+// 	{
+// 		ft_init_arg(env->option);
+//   		make_ls(".", env);
+//   	}
+//  	else
+// 	{
+// 		i = ft_parsing(ac, av, env);
+// 		if (i < 0)
+// 			return (0);
+// 		else if (i == ac)
+// 			make_ls(".", env);
+// 		else
+// 		{
+// 			while (i < ac)
+// 			{
+// 				make_ls(ft_strcat_path(".", av[i]) , env);
+// 				i++;
+// 			}
+// 		}
+// 	}
+// 	return (0);
+// }

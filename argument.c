@@ -60,17 +60,17 @@ int			ft_run_option(int i, char *av, bool *option)
 	return (1);
 }
 
-int			ft_parsing(int ac, char **av, t_env *env)
-{
-	int i;
+// int			ft_parsing(int ac, char **av, t_env *env)
+// {
+// 	int i;
 
-	i = 1;
-	ft_init_arg(env->option);
-	while (i < ac)
-	{
-		if (ft_run_option(i, av[i], env->option) < 0)
-			return (-1);
-		i++;
-	}
-	return (i);
-}
+// 	i = 1;
+// 	ft_init_arg(env->option);
+// 	while (i < ac)
+// 	{
+// 		if (ft_run_option(i, av[i], env->option) < 0)
+// 			return (-1);
+// 		i++;
+// 	}
+// 	return (i);
+// }

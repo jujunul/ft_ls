@@ -20,6 +20,7 @@
 # include <pwd.h>
 # include <unistd.h>
 # include <sys/stat.h>
+#include <stdio.h>
 # include "libft.h"
 typedef int bool;
 # define false 0
@@ -27,10 +28,10 @@ typedef int bool;
 
 enum
 {
-  R,
+  r,
   a,
   l,
-  r,
+  R,
   t
 };
 

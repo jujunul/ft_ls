@@ -191,19 +191,19 @@ void	make_ls(char *path, t_env *env)
 	}
 	lst->name = NULL;
 	lst->next = NULL;
-	if((!(dir = opendir(path))))
-	{
-		perror("ls : ");
-		exit(EXIT_FAILURE);
-	}
+	dir = opendir(path);
+	ft_error_directory(dir, path);
 	while ((dp = readdir(dir)) != NULL)
 	{
 		lst = ft_mem(lst, dp, env);
+		ft_bzero(&buf, sizeof(struct stat));
 		if (-1 == lstat(ft_strcat_path(path, dp->d_name), &buf))
 		  {
+
 		    perror(dp->d_name);
 		    exit(EXIT_FAILURE);
 		  }
+		printf("%d\n", buf.st_mode);
 		if ((ft_strcmp(dp->d_name, ".") == 0) || (ft_strcmp(dp->d_name, "..") == 0))
 			continue ;
 		else if (dp->d_name[0] == '.' && env->option[a] == false)
