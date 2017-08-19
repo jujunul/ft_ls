@@ -63,8 +63,15 @@ make_ls
 void    make_ls(char *path, t_env *env);
 t_mem     *ft_lst_sort(t_mem *lst, struct dirent *dp);
 t_mem    *ft_mem(t_mem *lst, struct dirent *dp, t_env *env);
-void    ft_affichage(t_mem *lst, t_env *env);
+void    ft_affichage(t_mem *lst, t_env *env, char *path);
 char    *ft_strcat_path(char *s1, char *s2);
 t_mem* ft_lst_sort_r(t_mem *lst, struct dirent *dp);
+
+
+/*
+aff
+*/
+void  aff_opt_l(t_mem *lst, t_env *env, char *path);
+void   ft_print_permission(struct stat buf);
 
 #endif

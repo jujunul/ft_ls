@@ -1,16 +1,16 @@
-#include "libft.h"
+#include <unistd.h>
+#include "ls.h"
 
-char *ft_strcat_path(char *s1, char *s2)
+void	ft_aff(char **tab)
 {
-		return (ft_strcat(ft_strcat(s1, "/"), s2));
+	int i;
+	while
 }
 
 int main(void)
 {
-	char *c;
-
-	c = malloc(sizeof(char) * 1000);
-	c[0] = '.';
-	ft_putstr(ft_strcat_path(c, "bonjour"));
-	return (0);
+	char *str;
+	str = (char *)malloc(100000);
+	str = "salut les amis\0";
+	ft_aff(ft_split_whitespaces(str));
 }

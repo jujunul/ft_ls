@@ -155,8 +155,10 @@ t_mem	*ft_mem(t_mem *lst, struct dirent *dp, t_env *env)
 	return (lst);
 }
 
-void	ft_affichage(t_mem *lst, t_env *env)
+void	ft_affichage(t_mem *lst, t_env *env, char *path)
 {
+	if (env->option[l])
+		aff_opt_l(lst, env, path);
 	while (lst->next != NULL)
 	{
 		if (lst->name[0] == '.' && env->option[a] == false)
@@ -209,10 +211,10 @@ void	make_ls(char *path, t_env *env)
 	{
 		lst = ft_mem(lst, dp, env);
 		if (-1 == lstat(ft_strcat_path(path, dp->d_name), &buf))
-		  {
+		{
 		    perror(dp->d_name);
 		    exit(EXIT_FAILURE);
-		  }
+		}
 		if ((ft_strcmp(dp->d_name, ".") == 0) || (ft_strcmp(dp->d_name, "..") == 0))
 			continue ;
 		else if (dp->d_name[0] == '.' && env->option[a] == false)
@@ -222,6 +224,6 @@ void	make_ls(char *path, t_env *env)
 			make_ls(ft_strcat_path(path, dp->d_name), env);
 		}
 	}
-	ft_affichage(lst, env);
+	ft_affichage(lst, env, path);
 	closedir(dir);
 }

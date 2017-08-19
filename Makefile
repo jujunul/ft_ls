@@ -5,6 +5,7 @@ INC = -I./libft/
 SRC = 	argument.c\
 		main.c\
 		make_ls.c\
+		aff.c\
 
 OBJ = $(SRC:.c=.o)
 

@@ -60,7 +60,7 @@ int			ft_run_option(int i, char *av, bool *option)
 	return (1);
 }
 
-int 		ft_parsing(char **av, int ac, t_env *env)
+int			ft_parsing(char **av, int ac, t_env *env)
 {
 	int i;
 	int j;
@@ -72,20 +72,18 @@ int 		ft_parsing(char **av, int ac, t_env *env)
 		if (j == -1)
 			exit(EXIT_FAILURE);
 		else if (j == 0)
-			break;
+		{
+			while ((++i - 1) < ac)
+				make_ls(ft_strcat_path(".", av[i - 1]), env);
+			return (0);
+		}
 	}
-	if (j == 0)
-	{
-		while ((++i - 1) < ac)
-			make_ls(ft_strcat_path(".", av[i - 1]), env);
-		return (0);
-	}
-	else if (j == 1)
+	if (j == 1)
 	{
 		if (av[i - 1][0] == '-')
 			make_ls(".", env);
 		else
-			make_ls(ft_strcat_path(".", av[i - 1]) , env);
+			make_ls(ft_strcat_path(".", av[i - 1]), env);
 	}
 	return (0);
 }
