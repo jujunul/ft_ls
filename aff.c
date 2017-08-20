@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ls.h"
-#include <time.h>
 
 void	ft_print_permission(struct stat buf)
 {
@@ -53,37 +52,26 @@ void	ft_putnol(char *str)
 	}
 }
 
-void	ft_print_time(struct stat buf)
+void	ft_affichage(t_mem *lst, t_env *env, char *path)
 {
-	ft_putnol(ctime(&buf.st_mtime));
-}
-
-void	aff_opt_l(t_mem *lst, t_env *env, char *path)
-{
-	struct stat buf;
-
+	if (env->option[l])
+	{
+		aff_opt_l(lst, env, path);
+		exit(1);
+	}
 	while (lst)
 	{
 		if (lst->name[0] == '.' && env->option[a] == false)
-			{
-				lst = lst->next;
-				continue ;
-			}
-		lstat(ft_strcat_path(path, lst->name), &buf);
-		ft_print_permission(buf);
-		ft_putstr("   ");
-		ft_putnbr(buf.st_nlink);
-		ft_putstr("  ");
-		ft_print_uid(buf);
-		ft_putstr("  ");
-		ft_print_gid(buf);
-		ft_putstr("  ");
-		ft_putnbr(buf.st_size);
-		ft_putstr("\t");
-		ft_print_time(buf);
-		ft_putstr(" ");
-		ft_putstr(lst->name);
-		ft_putstr("\n");
-		lst = lst->next;
+		{
+			lst = lst->next;
+			continue ;
+		}
+		else
+		{
+			ft_putstr(lst->name);
+			ft_putstr("\t");
+			lst = lst->next;
+		}
 	}
+	ft_putstr("\n");
 }

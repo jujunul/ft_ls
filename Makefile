@@ -6,6 +6,9 @@ SRC = 	argument.c\
 		main.c\
 		make_ls.c\
 		aff.c\
+		sort.c\
+		ft_optionl.c\
+		sort_time.c\
 
 OBJ = $(SRC:.c=.o)
 
