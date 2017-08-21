@@ -16,7 +16,8 @@ t_mem	*ft_mem(t_mem *lst, struct dirent *dp, t_env *env)
 {
 	if (lst->name == NULL)
 	{
-		lst->name = ft_strdup(dp->d_name);
+		if (!(lst->name = ft_strdup(dp->d_name)))
+			exit(EXIT_FAILURE);
 		lst->next = NULL;
 	}
 	else
@@ -33,16 +34,19 @@ t_mem	*ft_mem(t_mem *lst, struct dirent *dp, t_env *env)
 	return (lst);
 }
 
-void	ft_error_directory(DIR *dir, char *path)
+int		ft_error_directory(char *path, t_env *env)
 {
 	struct stat buf;
 
 	if (-1 != lstat(path, &buf))
 	{
-		ft_putendl((ft_strrchr(path, 47) + 1));
-		perror(path);
-		exit(EXIT_FAILURE);
+		ft_aff_on_file(path, env);
+		return (1);
 	}
+	else
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(" : No such file or directory", 2);
+		exit(EXIT_FAILURE);
 }
 
 void	ft_protect_stat(char *path, struct dirent *dp, struct stat buf)
@@ -54,7 +58,7 @@ void	ft_protect_stat(char *path, struct dirent *dp, struct stat buf)
 	}
 }
 
-void	ft_read(t_env *env, char *path, struct dirent *dp, t_mem *lst)
+t_mem	*ft_read(t_env *env, char *path, struct dirent *dp, t_mem *lst)
 {
 	while ((dp = readdir(env->dir)) != NULL)
 	{
@@ -68,6 +72,14 @@ void	ft_read(t_env *env, char *path, struct dirent *dp, t_mem *lst)
 		else if (env->option[R] == true && S_ISDIR(env->buf.st_mode))
 			make_ls(ft_strcat_path(path, dp->d_name), env);
 	}
+	return(lst);
+}
+
+void	ft_free_list(t_mem *lst)
+{
+	if(lst->next)
+		ft_free_list(lst->next);
+	free(lst);
 }
 
 void	make_ls(char *path, t_env *env)
@@ -85,10 +97,11 @@ void	make_ls(char *path, t_env *env)
 	lst->next = NULL;
 	if ((!(env->dir = opendir(path))))
 	{
-		perror(path);
-		exit(EXIT_FAILURE);
+		if(ft_error_directory(path, env))
+			return ;
 	}
-	ft_read(env, path, dp, lst);
+	lst = ft_read(env, path, dp, lst);
 	ft_affichage(lst, env, path);
+	ft_free_list(lst);
 	closedir(env->dir);
 }

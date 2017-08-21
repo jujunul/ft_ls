@@ -54,7 +54,7 @@ void	ft_putnol(char *str)
 
 void	ft_affichage(t_mem *lst, t_env *env, char *path)
 {
-	if (env->option[l])
+	if (env->option[l] == true)
 	{
 		aff_opt_l(lst, env, path);
 		exit(1);

@@ -23,11 +23,63 @@ void	ft_aff_all(struct stat buf, t_mem *lst)
 	ft_print_gid(buf);
 	ft_putstr("  ");
 	ft_putnbr(buf.st_size);
-	ft_putstr("\t");
+	ft_putstr("   ");
 	ft_putnol(ctime(&buf.st_mtime));
 	ft_putstr(" ");
 	ft_putstr(lst->name);
 	ft_putstr("\n");
+}
+
+void	aff_opt_lf(t_mem *lst, t_env *env, char *path)
+{
+	struct stat buf;
+
+	while (lst)
+	{
+		if (lst->name[0] == '.' && env->option[a] == false)
+		{
+			lst = lst->next;
+			continue ;
+		}
+		lstat(path, &buf);
+		ft_aff_all(buf, lst);
+		lst = lst->next;
+	}
+}
+
+void	ft_affichage_file(t_mem *lst, t_env *env, char *path)
+{
+	if (env->option[l] == true)
+	{
+		aff_opt_lf(lst, env, path);
+		exit(1);
+	}
+	while (lst)
+	{
+		if (lst->name[0] == '.' && env->option[a] == false)
+		{
+			lst = lst->next;
+			continue ;
+		}
+		else
+		{
+			ft_putstr(lst->name);
+			ft_putstr("   ");
+			lst = lst->next;
+		}
+	}
+	ft_putstr("\n");
+}
+
+void	ft_aff_on_file(char *path, t_env *env)
+{
+	t_mem *lst;
+
+	lst = (t_mem *)malloc(sizeof(t_mem));
+	lst->name = (ft_strrchr(path, 47) + 1);
+	lst->next = NULL;
+	printf("%s\n", lst->name);
+	ft_affichage_file(lst, env, path);
 }
 
 void	aff_opt_l(t_mem *lst, t_env *env, char *path)

@@ -34,7 +34,8 @@ enum
   a,
   l,
   R,
-  t
+  t,
+  un,
 };
 
 
@@ -47,10 +48,12 @@ typedef struct  s_mem
 
 typedef struct	s_env
 {
-  bool          option[5];
+  bool          option[6];
   struct stat   buf;
   DIR           *dir;
 }								t_env;
+
+void      ft_test(t_mem *lst);
 
 /*
 parsing argument
@@ -66,7 +69,8 @@ make_ls
 void    make_ls(char *path, t_env *env);
 t_mem    *ft_mem(t_mem *lst, struct dirent *dp, t_env *env);
 char    *ft_strcat_path(char *s1, char *s2);
-void    ft_error_directory(DIR *dir, char *path);
+int    ft_error_directory(char *path, t_env *env);
+void    ft_free_list(t_mem *lst);
 
 /*
 sort
@@ -86,5 +90,6 @@ void  ft_affichage(t_mem *lst, t_env *env, char *path);
 void  ft_print_uid(struct stat buf);
 void  ft_print_gid(struct stat buf);
 void  ft_putnol(char *str);
+void  ft_aff_on_file(char *path, t_env *env);
 
 #endif

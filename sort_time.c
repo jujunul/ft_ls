@@ -100,3 +100,48 @@ t_mem	*ft_sort_time_r(t_mem *lst, struct dirent *dp)
 	new->name = ft_strdup(dp->d_name);
 	return (asmr_sort_time_r(lst, tmp, new, dp));
 }
+
+// t_mem		*ft_sort_time_r(t_mem *lst, struct dirent *dp)
+// {
+// 	t_mem *tmp;
+// 	t_mem *prev;
+// 	t_mem *new;
+// 	struct stat buf;
+// 	struct stat tp;
+
+// 	new = (t_mem*)malloc(sizeof(t_mem));
+// 	tmp = lst;
+// 	prev = NULL;
+// 	lstat(dp->d_name, &tp);
+// 	new->name = ft_strdup(dp->d_name);
+// 	while (tmp != NULL)
+// 	{
+// 		lstat(tmp->name, &buf);
+// 		if ((buf.st_mtimespec.tv_sec - tp.st_mtimespec.tv_sec) >= 0)
+// 		{
+// 			if(prev == NULL)
+// 			{
+// 				new->next = tmp;
+// 				lst = new;
+// 				break ;
+// 			}
+// 				else
+// 			{
+// 				new->next = tmp;
+// 				prev->next = new;
+// 				break;
+// 			}
+// 		}
+// 		prev = tmp;
+// 		tmp = tmp->next;
+// 	}
+// 	return (lst);
+// }
+
+
+
+
+
+
+
+

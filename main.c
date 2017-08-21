@@ -23,6 +23,15 @@ char	*ft_strcat_path(char *s1, char *s2)
 	return (buf);
 }
 
+void	ft_test(t_mem *lst)
+{
+	while(lst)
+	{
+		printf("%s\n", lst->name);
+		lst = lst->next;
+	}
+}
+
 int		main(int ac, char **av)
 {
 	t_env	*env;
