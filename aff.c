@@ -12,9 +12,19 @@
 
 #include "ls.h"
 
+void	ft_puttype(struct stat buf)
+{
+	if (S_ISDIR(buf.st_mode))
+		ft_putchar('d');
+	else if (S_ISLNK(buf.st_mode))
+		ft_putchar('l');
+	else
+		ft_putchar('-');
+}
+
 void	ft_print_permission(struct stat buf)
 {
-	ft_putstr((S_ISDIR(buf.st_mode)) ? "d" : "-");
+	ft_puttype(buf);
 	ft_putstr((buf.st_mode & S_IRUSR) ? "r" : "-");
 	ft_putstr((buf.st_mode & S_IWUSR) ? "w" : "-");
 	ft_putstr((buf.st_mode & S_IXUSR) ? "x" : "-");
@@ -57,7 +67,7 @@ void	ft_affichage(t_mem *lst, t_env *env, char *path)
 	if (env->option[l] == true)
 	{
 		aff_opt_l(lst, env, path);
-		exit(1);
+		return ;
 	}
 	while (lst)
 	{

@@ -49,27 +49,25 @@ int		ft_error_directory(char *path, t_env *env)
 		exit(EXIT_FAILURE);
 }
 
-void	ft_protect_stat(char *path, struct dirent *dp, struct stat buf)
-{
-	if (-1 == lstat(ft_strcat_path(path, dp->d_name), &buf))
-	{
-		perror(dp->d_name);
-		exit(EXIT_FAILURE);
-	}
-}
 
 t_mem	*ft_read(t_env *env, char *path, struct dirent *dp, t_mem *lst)
 {
+	struct stat buf;
+
 	while ((dp = readdir(env->dir)) != NULL)
 	{
 		lst = ft_mem(lst, dp, env);
-		ft_protect_stat(path, dp, env->buf);
+		if (-1 == lstat(ft_strcat_path(path, dp->d_name), &buf))
+		{
+			perror(dp->d_name);
+			exit(EXIT_FAILURE);
+		}
 		if ((ft_strcmp(dp->d_name, ".") == 0) ||
 				(ft_strcmp(dp->d_name, "..") == 0))
 			continue ;
 		else if (dp->d_name[0] == '.' && env->option[a] == false)
 			continue ;
-		else if (env->option[R] == true && S_ISDIR(env->buf.st_mode))
+		else if (env->option[R] == true && S_ISDIR(buf.st_mode))
 			make_ls(ft_strcat_path(path, dp->d_name), env);
 	}
 	return(lst);
@@ -100,8 +98,9 @@ void	make_ls(char *path, t_env *env)
 		if(ft_error_directory(path, env))
 			return ;
 	}
-	lst = ft_read(env, path, dp, lst);
+
+	ft_read(env, path, dp, lst);
 	ft_affichage(lst, env, path);
+	//deplacer la recursive ici ;;;;;;; reparcourrir la list sinan ca plantellllpwn[awnb]
 	ft_free_list(lst);
-	closedir(env->dir);
 }

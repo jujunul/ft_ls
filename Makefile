@@ -1,4 +1,4 @@
-NAME = ls
+NAME = ft_ls
 
 INC = -I./libft/
 
