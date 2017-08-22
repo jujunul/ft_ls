@@ -49,27 +49,44 @@ int		ft_error_directory(char *path, t_env *env)
 		exit(EXIT_FAILURE);
 }
 
-
-t_mem	*ft_read(t_env *env, char *path, struct dirent *dp, t_mem *lst)
+void	ft_printnamefile(char *path, t_env *env)
 {
 	struct stat buf;
 
-	while ((dp = readdir(env->dir)) != NULL)
+	if (ft_strcmp(path, ".") == 0)
+		return ;
+	ft_putchar('\n');
+	ft_putendl(ft_strjoin(path, ":"));
+}
+
+void	ft_recur(t_mem *lst, t_env *env, char *path)
+{
+	struct stat buf;
+
+	while(lst)
 	{
-		lst = ft_mem(lst, dp, env);
-		if (-1 == lstat(ft_strcat_path(path, dp->d_name), &buf))
+		lstat(ft_strcat_path(path, lst->name), &buf);
+		if ((ft_strcmp(lst->name, ".") == 0) ||
+				(ft_strcmp(lst->name, "..") == 0))
 		{
-			perror(dp->d_name);
-			exit(EXIT_FAILURE);
+			lst = lst->next;
+			continue ;
 		}
-		if ((ft_strcmp(dp->d_name, ".") == 0) ||
-				(ft_strcmp(dp->d_name, "..") == 0))
+		else if (lst->name[0] == '.' && env->option[a] == false)
+		{
+			lst = lst->next;
 			continue ;
-		else if (dp->d_name[0] == '.' && env->option[a] == false)
-			continue ;
+		}
 		else if (env->option[R] == true && S_ISDIR(buf.st_mode))
-			make_ls(ft_strcat_path(path, dp->d_name), env);
+			make_ls(ft_strcat_path(path, lst->name), env);
+		lst = lst->next;
 	}
+}
+
+t_mem	*ft_read(t_env *env, char *path, struct dirent *dp, t_mem *lst)
+{
+	while ((dp = readdir(env->dir)) != NULL)
+		lst = ft_mem(lst, dp, env);
 	return(lst);
 }
 
@@ -98,9 +115,10 @@ void	make_ls(char *path, t_env *env)
 		if(ft_error_directory(path, env))
 			return ;
 	}
-
-	ft_read(env, path, dp, lst);
+	lst = ft_read(env, path, dp, lst);
+	if (env->option[R] == true)
+		ft_printnamefile(path, env);
 	ft_affichage(lst, env, path);
-	//deplacer la recursive ici ;;;;;;; reparcourrir la list sinan ca plantellllpwn[awnb]
+	ft_recur(lst, env, path);
 	ft_free_list(lst);
 }

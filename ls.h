@@ -91,5 +91,6 @@ void  ft_print_uid(struct stat buf);
 void  ft_print_gid(struct stat buf);
 void  ft_putnol(char *str);
 void  ft_aff_on_file(char *path, t_env *env);
+void  ft_printotal(int total);
 
 #endif

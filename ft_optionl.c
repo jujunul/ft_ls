@@ -31,6 +31,72 @@ void	ft_putname(char *name, char *path, struct stat buf)
 		ft_putstr(name);
 }
 
+void	ft_printonlyyear(t_mem *lst, char *path)
+{
+	char *str;
+	int i;
+	struct stat buf;
+
+	lstat(ft_strcat_path(path, lst->name), &buf);
+	str = ctime(&buf.st_mtime);
+	str = str + 4;
+	i = 0;
+	while (*str != '\n' && i < 6)
+	{
+		write(1, str, 1);
+		str++;
+		i++;
+	}
+	i = 0;
+	while(i < 9)
+	{
+		str++;
+		i++;
+	}
+	while (*str != '\n')
+	{
+		write(1, str, 1);
+		str++;
+	}
+}
+
+void	ft_printonlymin(t_mem *lst, char *path)
+{
+	char *str;
+	int i;
+	struct stat buf;
+
+	lstat(ft_strcat_path(path, lst->name), &buf);
+	str = ctime(&buf.st_mtime);
+	str = str + 4;
+	i = 0;
+	while (*str != '\n' && i < 12)
+	{
+		write(1, str, 1);
+		str++;
+		i++;
+	}
+}
+
+void	ft_puttime(t_mem *lst, char *path)
+{
+	time_t	current_time;
+	time_t	month;
+	struct stat buf;
+
+	current_time = time(0);
+	month = 15552000;
+	lstat(ft_strcat_path(path, lst->name), &buf);
+	if (current_time - buf.st_mtime > month)
+	{
+		ft_printonlyyear(lst, path);
+	}
+	else
+	{
+		ft_printonlymin(lst, path);
+	}
+}
+
 void	ft_aff_all(struct stat buf, t_mem *lst, char *path)
 {
 	ft_print_permission(buf);
@@ -43,7 +109,8 @@ void	ft_aff_all(struct stat buf, t_mem *lst, char *path)
 	ft_putstr("\t");
 	ft_putnbr(buf.st_size);
 	ft_putstr("\t");
-	ft_putnol(ctime(&buf.st_mtime));
+	ft_puttime(lst, path);
+	//ft_putnol(ctime(&buf.st_mtime));
 	ft_putstr(" ");
 	ft_putname(lst->name, path, buf);
 	ft_putstr("\n");
@@ -100,9 +167,17 @@ void	ft_aff_on_file(char *path, t_env *env)
 	ft_affichage_file(lst, env, path);
 }
 
+void	ft_printotal(int total)
+{
+	ft_putstr("total ");
+	ft_putnbr(total);
+	ft_putchar('\n');
+}
+
 void	aff_opt_l(t_mem *lst, t_env *env, char *path)
 {
 	struct stat buf;
+	long long test;
 
 	while (lst)
 	{

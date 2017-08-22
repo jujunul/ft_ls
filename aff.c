@@ -62,10 +62,31 @@ void	ft_putnol(char *str)
 	}
 }
 
+void	ft_get_total(t_mem *lst, char *path, t_env *env)
+{
+	int test;
+	struct stat buf;
+
+	test = 0;
+	while(lst)
+	{
+		if (lst->name[0] == '.' && env->option[a] == false)
+		{
+			lst = lst->next;
+			continue ;
+		}
+		lstat(ft_strcat_path(path, lst->name), &buf);
+		test += buf.st_blocks;
+		lst = lst->next;
+	}
+	ft_printotal(test);
+}
+
 void	ft_affichage(t_mem *lst, t_env *env, char *path)
 {
 	if (env->option[l] == true)
 	{
+		ft_get_total(lst, path, env);
 		aff_opt_l(lst, env, path);
 		return ;
 	}
