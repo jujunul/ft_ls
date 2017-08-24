@@ -9,6 +9,7 @@ SRC = 	argument.c\
 		sort.c\
 		ft_optionl.c\
 		sort_time.c\
+		ls.c
 
 OBJ = $(SRC:.c=.o)
 

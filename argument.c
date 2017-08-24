@@ -63,12 +63,27 @@ int			ft_run_option(int i, char *av, bool *option)
 	return (1);
 }
 
+void		ft_padding_mfile(int t, char **av, int i)
+{
+	struct stat buf;
+
+	lstat(av[i - 1], &buf);
+	if (t != 1 && S_ISDIR(buf.st_mode))
+	{
+		ft_putstr("\n");
+		ft_putstr(av[i - 1]);
+		ft_putendl(":");
+	}
+}
+
 int			ft_parsing(char **av, int ac, t_env *env)
 {
 	int i;
 	int j;
+	int t;
 
 	i = 0;
+	t = 0;
 	while (++i < ac)
 	{
 		j = ft_run_option(i, av[i], env->option);
@@ -77,7 +92,13 @@ int			ft_parsing(char **av, int ac, t_env *env)
 		else if (j == 0)
 		{
 			while ((++i - 1) < ac)
-				make_ls(ft_strcat_path(".", av[i - 1]), env);
+			{
+				ft_padding_mfile(++t, av, i);
+				if (ft_strchr(av[i - 1], 47) == NULL)
+					make_ls(ft_strcat_path(".", av[i - 1]), env);
+				else
+					make_ls(av[i - 1], env);
+			}
 			return (0);
 		}
 	}

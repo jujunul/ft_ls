@@ -44,9 +44,11 @@ int		ft_error_directory(char *path, t_env *env)
 		return (1);
 	}
 	else
+	{
 		ft_putstr_fd(path, 2);
 		ft_putendl_fd(" : No such file or directory", 2);
-		exit(EXIT_FAILURE);
+		return (1);
+	}
 }
 
 void	ft_printnamefile(char *path, t_env *env)
@@ -63,7 +65,7 @@ void	ft_recur(t_mem *lst, t_env *env, char *path)
 {
 	struct stat buf;
 
-	while(lst)
+	while (lst)
 	{
 		lstat(ft_strcat_path(path, lst->name), &buf);
 		if ((ft_strcmp(lst->name, ".") == 0) ||
@@ -87,14 +89,25 @@ t_mem	*ft_read(t_env *env, char *path, struct dirent *dp, t_mem *lst)
 {
 	while ((dp = readdir(env->dir)) != NULL)
 		lst = ft_mem(lst, dp, env);
-	return(lst);
+	return (lst);
 }
 
 void	ft_free_list(t_mem *lst)
 {
-	if(lst->next)
+	if (lst->next)
 		ft_free_list(lst->next);
 	free(lst);
+}
+
+int		ft_isfile(char *path)
+{
+	struct stat buf;
+
+	lstat(path, &buf);
+	if (S_ISDIR(buf.st_mode))
+		return (1);
+	else
+		return (0);
 }
 
 void	make_ls(char *path, t_env *env)
@@ -112,7 +125,7 @@ void	make_ls(char *path, t_env *env)
 	lst->next = NULL;
 	if ((!(env->dir = opendir(path))))
 	{
-		if(ft_error_directory(path, env))
+		if (ft_error_directory(path, env))
 			return ;
 	}
 	lst = ft_read(env, path, dp, lst);

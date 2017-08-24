@@ -14,12 +14,20 @@
 
 void	ft_puttype(struct stat buf)
 {
-	if (S_ISDIR(buf.st_mode))
+	if (S_ISREG(buf.st_mode))
+		ft_putchar('-');
+	else if (S_ISDIR(buf.st_mode))
 		ft_putchar('d');
 	else if (S_ISLNK(buf.st_mode))
 		ft_putchar('l');
-	else
-		ft_putchar('-');
+	else if (S_ISBLK(buf.st_mode))
+		ft_putchar('b');
+	else if (S_ISCHR(buf.st_mode))
+		ft_putchar('c');
+	else if (S_ISFIFO(buf.st_mode))
+		ft_putchar('p');
+	else if (S_ISSOCK(buf.st_mode))
+		ft_putchar('s');
 }
 
 void	ft_print_permission(struct stat buf)
@@ -27,13 +35,28 @@ void	ft_print_permission(struct stat buf)
 	ft_puttype(buf);
 	ft_putstr((buf.st_mode & S_IRUSR) ? "r" : "-");
 	ft_putstr((buf.st_mode & S_IWUSR) ? "w" : "-");
-	ft_putstr((buf.st_mode & S_IXUSR) ? "x" : "-");
+	if ((!(buf.st_mode & S_IXUSR)) && (buf.st_mode & S_ISUID))
+		ft_putchar('S');
+	else if ((buf.st_mode & S_IXUSR) && (buf.st_mode & S_ISUID))
+		ft_putchar('s');
+	else
+		ft_putstr((buf.st_mode & S_IXUSR) ? "x" : "-");
 	ft_putstr((buf.st_mode & S_IRGRP) ? "r" : "-");
 	ft_putstr((buf.st_mode & S_IWGRP) ? "w" : "-");
-	ft_putstr((buf.st_mode & S_IXGRP) ? "x" : "-");
+	if ((!(buf.st_mode & S_IXGRP)) && (buf.st_mode & S_ISUID))
+		ft_putchar('S');
+	else if ((buf.st_mode & S_IXGRP) && (buf.st_mode & S_ISUID))
+		ft_putchar('s');
+	else
+		ft_putstr((buf.st_mode & S_IXGRP) ? "x" : "-");
 	ft_putstr((buf.st_mode & S_IROTH) ? "r" : "-");
 	ft_putstr((buf.st_mode & S_IWOTH) ? "w" : "-");
-	ft_putstr((buf.st_mode & S_IXOTH) ? "x" : "-");
+	if ((!(buf.st_mode & S_IXOTH)) && (buf.st_mode & S_ISVTX))
+		ft_putchar('T');
+	else if ((buf.st_mode & S_IXOTH) && (buf.st_mode & S_ISVTX))
+		ft_putchar('t');
+	else
+		ft_putstr((buf.st_mode & S_IXOTH) ? "x" : "-");
 }
 
 void	ft_print_uid(struct stat buf)
@@ -52,23 +75,13 @@ void	ft_print_gid(struct stat buf)
 	ft_putstr(tmp->gr_name);
 }
 
-void	ft_putnol(char *str)
-{
-	str = str + 4;
-	while (*str != '\0' && *str != '\n')
-	{
-		write(1, str, 1);
-		str++;
-	}
-}
-
 void	ft_get_total(t_mem *lst, char *path, t_env *env)
 {
-	int test;
+	int			test;
 	struct stat buf;
 
 	test = 0;
-	while(lst)
+	while (lst)
 	{
 		if (lst->name[0] == '.' && env->option[a] == false)
 		{

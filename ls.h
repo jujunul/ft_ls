@@ -84,13 +84,18 @@ void  ft_simpletest(t_mem *tmp, t_mem *new);
 /*
 aff
 */
+
 void  aff_opt_l(t_mem *lst, t_env *env, char *path);
 void  ft_print_permission(struct stat buf);
 void  ft_affichage(t_mem *lst, t_env *env, char *path); 
 void  ft_print_uid(struct stat buf);
 void  ft_print_gid(struct stat buf);
-void  ft_putnol(char *str);
 void  ft_aff_on_file(char *path, t_env *env);
 void  ft_printotal(int total);
+void  ft_putname(char *name, char *path, struct stat buf);
+void  ft_printonlyyear(t_mem *lst, char *path);
+void  ft_printonlymin(t_mem *lst, char *path);
+void  ft_puttime(t_mem *lst, char *path);
+void  ft_aff_all(struct stat buf, t_mem *lst, char *path);
 
 #endif

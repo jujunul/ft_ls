@@ -25,7 +25,7 @@ char	*ft_strcat_path(char *s1, char *s2)
 
 void	ft_test(t_mem *lst)
 {
-	while(lst)
+	while (lst)
 	{
 		printf("%s\n", lst->name);
 		lst = lst->next;
