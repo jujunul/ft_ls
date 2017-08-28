@@ -1,38 +1,58 @@
+# Project file
 NAME = ft_ls
 
-INC = -I./libft/
+# Project builds and dirs
+SRCDIR = ./src/
+SRCNAMES = $(shell ls $(SRCDIR) | grep -E ".+\.c")
+SRC = $(addprefix $(SRCDIR), $(SRCNAMES))
+INC = ./inc/
+BUILDDIR = ./build/
+BUILDOBJS = $(addprefix $(BUILDDIR), $(SRCNAMES:.c=.o))
 
-SRC = 	argument.c\
-		main.c\
-		make_ls.c\
-		aff.c\
-		sort.c\
-		ft_optionl.c\
-		sort_time.c\
-		ls.c
+# Libft builds and dirs
+LIBDIR = ./libft/
+LIBFT = ./libft/libft.a
+LIBINC = ./libft
 
-OBJ = $(SRC:.c=.o)
+# Optimization and Compiler flags and commands
+CC = gcc
+OPFLAGS = -O3 -funroll-loops
+CFLAGS = -Wall -Werror -Wextra
 
-LIBFT = libft/libft.a
+# Debugging flags
+DEBUG = -g
 
-CFLAGS = $(INC)
+# Main rule
+all: $(BUILDDIR) $(LIBFT) $(NAME)
 
-all: $(NAME)
+# Object dir rule
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
 
-$(NAME): $(LIBFT) $(OBJ)
-		gcc $(CFLAGS) $(LIBFT) -o $(NAME) $(OBJ)
+# Objects rule
+$(BUILDDIR)%.o:$(SRCDIR)%.c
+	$(CC) $(CFLAGS) -I$(LIBINC) -I$(INC) -o $@ -c $<
 
+# Project file rule
+$(NAME): $(BUILDOBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(BUILDOBJS) $(LIBFT)
+
+# Libft rule
 $(LIBFT):
-		make -C libft/
+	make -C $(LIBDIR)
 
+# Cleaning up the build files
 clean:
-		rm -rf $(OBJ)
-		make -C libft/ clean
+	rm -rf $(BUILDDIR)
+	make -C $(LIBDIR) clean
 
+# Getting rid of the project file
 fclean: clean
-		make -C ./libft/ fclean
-		rm -rf $(NAME)
+	rm -rf $(NAME)
+	make -C $(LIBDIR) fclean
 
+# Do both of the above
 re: fclean all
 
-.PHONY: make clean fclean re all
+# Just in case those files exist in the root dir
+.PHONY: all fclean clean re
