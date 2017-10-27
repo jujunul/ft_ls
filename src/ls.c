@@ -6,7 +6,7 @@
 /*   By: juthierr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/24 01:24:52 by juthierr          #+#    #+#             */
-/*   Updated: 2017/08/24 01:24:55 by juthierr         ###   ########.fr       */
+/*   Updated: 2017/10/25 18:45:48 by juthierr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	ft_aff_all(struct stat buf, t_mem *lst, char *path)
 		ft_putnbr(buf.st_size);
 	ft_putstr("\t");
 	ft_puttime(lst, path);
-	ft_putstr(" ");
+	ft_putstr("\t");
 	ft_putname(lst->name, path, buf);
 	ft_putstr("\n");
 }

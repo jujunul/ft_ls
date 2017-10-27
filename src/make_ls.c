@@ -6,7 +6,7 @@
 /*   By: juthierr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 20:45:36 by juthierr          #+#    #+#             */
-/*   Updated: 2017/08/20 17:48:07 by juthierr         ###   ########.fr       */
+/*   Updated: 2017/10/27 16:21:56 by juthierr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,21 @@ int		ft_error_directory(char *path, t_env *env)
 
 void	ft_recur(t_mem *lst, t_env *env, char *path)
 {
-	struct stat buf;
+	struct stat	buf;
 
 	while (lst)
 	{
 		lstat(ft_strcat_path(path, lst->name), &buf);
 		if ((ft_strcmp(lst->name, ".") == 0) ||
 				(ft_strcmp(lst->name, "..") == 0))
-		{
-			lst = lst->next;
-			continue ;
-		}
+			;
 		else if (lst->name[0] == '.' && env->option[a] == FALSE)
+			;
+		else if (env->option[R] == TRUE && S_ISDIR(buf.st_mode) &&
+				!S_ISLNK(buf.st_mode))
 		{
-			lst = lst->next;
-			continue ;
-		}
-		else if (env->option[R] == TRUE && S_ISDIR(buf.st_mode))
 			make_ls(ft_strcat_path(path, lst->name), env);
+		}
 		lst = lst->next;
 	}
 }
@@ -81,6 +78,7 @@ t_mem	*ft_read(t_env *env, t_mem *lst)
 
 	while ((dp = readdir(env->dir)) != NULL)
 		lst = ft_mem(lst, dp, env);
+	closedir(env->dir);
 	return (lst);
 }
 
@@ -95,7 +93,7 @@ void	make_ls(char *path, t_env *env)
 	}
 	lst->name = NULL;
 	lst->next = NULL;
-	if ((!(env->dir = opendir(path))))
+	if ((env->dir = opendir(path)) == NULL)
 	{
 		if (ft_error_directory(path, env))
 			return ;

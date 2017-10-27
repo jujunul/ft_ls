@@ -3,7 +3,9 @@ NAME = ft_ls
 
 # Project builds and dirs
 SRCDIR = ./src/
-SRCNAMES = $(shell ls $(SRCDIR) | grep -E ".+\.c")
+#SRCNAMES = $(shell ls $(SRCDIR) | grep -E ".+\.c")
+SRCNAMES =	aff.c argument.c ft_optionl.c ls.c main.c make_ls.c \
+		padd.c sort.c sort_time.c pad.c
 SRC = $(addprefix $(SRCDIR), $(SRCNAMES))
 INC = ./inc/
 BUILDDIR = ./build/
@@ -17,17 +19,17 @@ LIBINC = ./libft
 # Optimization and Compiler flags and commands
 CC = gcc
 OPFLAGS = -O3 -funroll-loops
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g3
 
 # Debugging flags
-DEBUG = -g
+DEBUG = -g3
 
 # Main rule
 all: $(BUILDDIR) $(LIBFT) $(NAME)
 
 # Object dir rule
 $(BUILDDIR):
-	mkdir -p $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)
 
 # Objects rule
 $(BUILDDIR)%.o:$(SRCDIR)%.c
@@ -39,17 +41,17 @@ $(NAME): $(BUILDOBJS)
 
 # Libft rule
 $(LIBFT):
-	make -C $(LIBDIR)
+	@make -C $(LIBDIR)
 
 # Cleaning up the build files
 clean:
-	rm -rf $(BUILDDIR)
-	make -C $(LIBDIR) clean
+	@rm -rf $(BUILDDIR)
+	@make -C $(LIBDIR) clean
 
 # Getting rid of the project file
 fclean: clean
-	rm -rf $(NAME)
-	make -C $(LIBDIR) fclean
+	@rm -rf $(NAME)
+	@make -C $(LIBDIR) fclean
 
 # Do both of the above
 re: fclean all

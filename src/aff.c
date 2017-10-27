@@ -6,7 +6,7 @@
 /*   By: juthierr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/18 10:17:32 by juthierr          #+#    #+#             */
-/*   Updated: 2017/08/18 10:17:33 by juthierr         ###   ########.fr       */
+/*   Updated: 2017/10/27 16:25:24 by juthierr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,49 +63,29 @@ void	ft_print_uid(struct stat buf)
 {
 	struct passwd *tmp;
 
-	tmp = getpwuid(buf.st_uid);
-	ft_putstr(tmp->pw_name);
+	if ((tmp = getpwuid(buf.st_uid)) == NULL)
+		ft_putnbr(buf.st_uid);
+	else
+		ft_putstr(tmp->pw_name);
 }
 
 void	ft_print_gid(struct stat buf)
 {
 	struct group *tmp;
 
-	tmp = getgrgid(buf.st_gid);
-	ft_putstr(tmp->gr_name);
+	if ((tmp = getgrgid(buf.st_gid)) == NULL)
+		ft_putnbr(buf.st_gid);
+	else
+		ft_putstr(tmp->gr_name);
 }
 
 void	ft_affichage(t_mem *lst, t_env *env, char *path)
 {
-	int i;
-
-	i = 0;
 	if (env->option[l] == TRUE)
 	{
 		ft_get_total(lst, path, env);
 		aff_opt_l(lst, env, path);
 		return ;
 	}
-	while (lst)
-	{
-		if (lst->name[0] == '.' && env->option[a] == FALSE)
-		{
-			lst = lst->next;
-			continue ;
-		}
-		else
-		{
-			i++;
-			ft_putstr(lst->name);
-			lst = lst->next;
-			if (i == 4)
-			{
-				i = 0;
-				ft_putchar('\n');
-			}
-			else
-				ft_putstr("\t");
-		}
-	}
-	ft_putchar('\n');
+	ft_putincol(lst, env);
 }

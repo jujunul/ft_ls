@@ -6,7 +6,7 @@
 /*   By: juthierr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 15:48:14 by juthierr          #+#    #+#             */
-/*   Updated: 2017/08/24 19:03:55 by juthierr         ###   ########.fr       */
+/*   Updated: 2017/10/27 16:26:27 by juthierr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,5 @@ void				ft_aff_all(struct stat buf, t_mem *lst, char *path);
 void				ft_padding_mfile(int t, char **av, int i);
 void				ft_get_total(t_mem *lst, char *path, t_env *env);
 void				ft_printnamefile(char *path);
-
+void				ft_putincol(t_mem *lst, t_env *env);
 #endif
